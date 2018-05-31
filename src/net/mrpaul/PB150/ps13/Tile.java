@@ -14,7 +14,7 @@ public class Tile {
 			this.value = num;
 	}
 
-	public boolean  isEmpty() {
+	public boolean isEmpty() {
 
 		if (value == 0)
 			return true;

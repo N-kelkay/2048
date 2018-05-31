@@ -7,6 +7,7 @@ import java.util.Scanner;
 public class Board {
 
 	private int gameSize;
+	//
 	private Tile[][] tile;
 	private int score;
 
@@ -117,13 +118,27 @@ public class Board {
 	 * 90% of the time, the new tile should be a 2; 10% of the time, it should be a 4.
 	 */
 	public void addTile() {
-		for (int i = 0; i < this.tile.length; i++) {
-			for (int j = 0; j < this.tile[i].length; j++) {
-				if (this.tile[i][j].getValue() == 0) {
-					//this.tile[i][j] = new Tile[2][2];
+
+		if (isFull() == false) {
+			for (int i = 0; i < this.tile.length; i++) {
+				for (int j = 0; j < this.tile[i].length; j++) {
+					if (this.tile[i][j].getValue() == 0) {
+						int x = (int) Math.random() * 101;
+
+						if(x <= 90)
+							this.tile[i][j] = new Tile(2);
+						else
+							this.tile[i][j] = new Tile(4);
+					}
 				}
 			}
 		}
 
 	}
+
+	//rotates this Board's 2d Tile array 90 degrees clockwise.  It should modify this board itself
+	public void rotateCW(){
+
+	}
+
 }
