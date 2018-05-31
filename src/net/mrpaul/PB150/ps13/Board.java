@@ -2,6 +2,7 @@ package net.mrpaul.PB150.ps13;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Board {
@@ -212,5 +213,11 @@ public class Board {
 		return clone;
 	}
 
-
+	public String toString(){
+		String view = score+"\n"+gameSize+"\n";
+		for(Tile[] i: board) {
+			view = view + Arrays.toString(i)+"\n";
+		}
+		return view;
+	}
 }
