@@ -125,7 +125,7 @@ public class Board {
 					if (this.tile[i][j].getValue() == 0) {
 						int x = (int) Math.random() * 101;
 
-						if(x <= 90)
+						if (x <= 90)
 							this.tile[i][j] = new Tile(2);
 						else
 							this.tile[i][j] = new Tile(4);
@@ -136,9 +136,23 @@ public class Board {
 
 	}
 
-	//rotates this Board's 2d Tile array 90 degrees clockwise.  It should modify this board itself
-	public void rotateCW(){
+	/**
+	 * rotates this Board's 2d Tile array 90 degrees clockwise
+	 */
+	public void rotateCW() {
+		final int M = this.tile.length;
+		final int N = this.tile[0].length;
+		Tile[][] ret = new Tile[N][M];
+		for (int r = 0; r < M; r++) {
+			for (int c = 0; c < N; c++) {
+				ret[c][M - 1 - r] = this.tile[r][c];
+			}
+		}
+		this.tile = ret;
+	}
 
+	public boolean left(){
+		return false;
 	}
 
 }
