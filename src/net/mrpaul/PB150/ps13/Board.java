@@ -8,12 +8,12 @@ public class Board {
 
 	private int gameSize;
 	//
-	private Tile[][] tile;
+	private Tile[][] board;
 	private int score;
 
 	Board() {
 		this.gameSize = 0;
-		this.tile = new Tile[4][4];
+		this.board = new Tile[4][4];
 		this.score = 0;
 	}
 
@@ -48,7 +48,7 @@ public class Board {
 	 * sets all Tiles to 0; reset score to 0
 	 */
 	public void reset() {
-		this.tile = new Tile[0][0];
+		this.board = new Tile[0][0];
 		this.score = 0;
 	}
 
@@ -59,9 +59,9 @@ public class Board {
 	 */
 	public int countEmptySpaces() {
 		int count = 0;
-		for (int i = 0; i < this.tile.length; i++) {
-			for (int j = 0; j < this.tile[i].length; j++) {
-				if (this.tile[i][j].getValue() == 0) {
+		for (int i = 0; i < this.board.length; i++) {
+			for (int j = 0; j < this.board[i].length; j++) {
+				if (this.board[i][j].getValue() == 0) {
 					count++;
 				}
 			}
@@ -84,9 +84,9 @@ public class Board {
 	 * @return
 	 */
 	public boolean isFull() {
-		for (int i = 0; i < this.tile.length; i++) {
-			for (int j = 0; j < this.tile[i].length; j++) {
-				if (this.tile[i][j].getValue() != 0) {
+		for (int i = 0; i < this.board.length; i++) {
+			for (int j = 0; j < this.board[i].length; j++) {
+				if (this.board[i][j].getValue() != 0) {
 					return true;
 				}
 			}
@@ -101,11 +101,11 @@ public class Board {
 	 * @return
 	 */
 	public boolean canMove() {
-		for (int i = 0; i < this.tile.length; i++) {
-			for (int j = 0; j < this.tile[i].length; j++) {
-				if (this.tile[i][j].getValue() != 0) {
+		for (int i = 0; i < this.board.length; i++) {
+			for (int j = 0; j < this.board[i].length; j++) {
+				if (this.board[i][j].getValue() != 0) {
 					return true;
-				} else if ((this.tile[i][j].getValue() == this.tile[i + 1][i + j].getValue()) || (this.tile[i][j].getValue() == this.tile[i - 1][i - j].getValue())) {
+				} else if ((this.board[i][j].getValue() == this.board[i + 1][i + j].getValue()) || (this.board[i][j].getValue() == this.board[i - 1][i - j].getValue())) {
 					return true;
 				}
 			}
@@ -120,15 +120,15 @@ public class Board {
 	public void addTile() {
 
 		if (isFull() == false) {
-			for (int i = 0; i < this.tile.length; i++) {
-				for (int j = 0; j < this.tile[i].length; j++) {
-					if (this.tile[i][j].getValue() == 0) {
+			for (int i = 0; i < this.board.length; i++) {
+				for (int j = 0; j < this.board[i].length; j++) {
+					if (this.board[i][j].getValue() == 0) {
 						int x = (int) Math.random() * 101;
 
 						if (x <= 90)
-							this.tile[i][j] = new Tile(2);
+							this.board[i][j] = new Tile(2);
 						else
-							this.tile[i][j] = new Tile(4);
+							this.board[i][j] = new Tile(4);
 					}
 				}
 			}
@@ -140,19 +140,77 @@ public class Board {
 	 * rotates this Board's 2d Tile array 90 degrees clockwise
 	 */
 	public void rotateCW() {
-		final int M = this.tile.length;
-		final int N = this.tile[0].length;
+		final int M = this.board.length;
+		final int N = this.board[0].length;
 		Tile[][] ret = new Tile[N][M];
 		for (int r = 0; r < M; r++) {
 			for (int c = 0; c < N; c++) {
-				ret[c][M - 1 - r] = this.tile[r][c];
+				ret[c][M - 1 - r] = this.board[r][c];
 			}
 		}
-		this.tile = ret;
+		this.board = ret;
 	}
 
-	public boolean left(){
-		return false;
+	/**
+	 * checks each row and perform a left shift
+	 *
+	 * @return
+	 */
+	public boolean left() {
+		boolean changed = false;
+		for (int i = 0; i < this.board.length; i++) {
+			for (int j = 0; j < this.board[i].length - 1; j++) {
+				if (board[i][j + 1].getValue() == board[i][j].getValue()) {
+					board[i][j].setValue(board[i][j + 1].getValue() + board[i][j].getValue());
+					changed = true;
+				}
+				if (board[i][j].getValue() == 0) {
+					board[i][j].setValue(board[i][j + 1].getValue());
+					board[i][j].setValue(0);
+				}
+			}
+		}
+		return changed;
 	}
+
+	public boolean right() {
+		//rotates it 180 degrees
+		this.rotateCW();
+		this.rotateCW();
+
+		boolean x = this.left();
+
+		//rotates it back 180 degrees
+		this.rotateCW();
+		this.rotateCW();
+
+		return x;
+	}
+
+	public boolean up() {
+		this.rotateCW();
+		this.rotateCW();
+		this.rotateCW();
+		boolean x = this.left();
+		this.rotateCW();
+		return x;
+	}
+
+	public boolean down() {
+		this.rotateCW();
+		boolean x = this.left();
+		this.rotateCW();
+		this.rotateCW();
+		this.rotateCW();
+
+		return x;
+	}
+
+	// Not Finished
+	public Board copyBoard(){
+		Board clone = new Board();
+		return clone;
+	}
+
 
 }
