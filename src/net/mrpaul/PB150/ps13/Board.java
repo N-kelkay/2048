@@ -8,23 +8,49 @@ import java.util.Scanner;
 public class Board {
 
 	private int gameSize;
-	//
-	private Tile[][] board;
+
+	public Tile[][] board;
 	private int score;
 
 	Board() {
+		this.score = 0;
 		this.gameSize = 0;
 		this.board = new Tile[4][4];
-		this.score = 0;
+		for(int i = 0; i < board.length; i++){
+			for(int j = 0; j < board[i].length; j++){
+				board[i][j] = new Tile();
+			}
+		}
+
+		addTile();addTile();
+
 	}
 
 	Board(int size) {
 		this.gameSize = size;
+		this.board = new Tile[gameSize][gameSize];
+		for(int i = 0; i < board.length; i++){
+			for(int j = 0; j < board[i].length; j++){
+				board[i][j] = new Tile();
+			}
+		}
+		addTile();addTile();
 	}
 
 	Board(int size, int newScore) {
 		this.gameSize = size;
 		this.score = newScore;
+	}
+
+	//NEWEWEWEW
+	Board(Tile[][] a){
+		score = 0;
+		board = new Tile[4][4];
+		for(int i = 0; i < a.length;i++) {
+			for (int j = 0; j < a[0].length;j++) {
+				this.board[i][j]= a[i][j];
+			}
+		}
 	}
 
 	Board(String fileName) throws FileNotFoundException {
@@ -33,6 +59,10 @@ public class Board {
 		while (reader.hasNext()) {
 			System.out.println(reader.nextLine());
 		}
+	}
+
+	public Tile[][] getTile(){
+		return this.board;
 	}
 
 	/**
@@ -49,8 +79,14 @@ public class Board {
 	 * sets all Tiles to 0; reset score to 0
 	 */
 	public void reset() {
-		this.board = new Tile[0][0];
 		this.score = 0;
+
+		for(int i = 0; i < board.length; i++){
+			for(int j = 0; j < board[i].length; j++){
+				board[i][j].setValue(0);
+			}
+		}
+		addTile();addTile();
 	}
 
 	/**
@@ -102,6 +138,36 @@ public class Board {
 	 * @return
 	 */
 	public boolean canMove() {
+
+
+		boolean full = true;
+		boolean noMoves = true;
+
+
+		for(int i = 0; i < board.length;i++) {
+			for(int j = 0; j< board.length;j++) {
+				if(board[i][j].getValue()==0) {full = false;}
+			}
+		}
+		if(board[board.length-1][board.length-1].getValue()==board[board.length-2][board.length-1].getValue()
+				||board[board.length-1][board.length-1].getValue()==board[board.length-1][board.length-2].getValue()) {
+			noMoves=false;
+		}
+		for (int i = 0; i < board.length-1;i++) {
+			for (int j =0; j<board.length-1; j++) {
+				if(board[i][j].getValue()==board[i+1][j].getValue()||board[i][j].getValue()==board[i][j+1].getValue()) {
+					noMoves = false;
+				}
+			}
+		}
+
+		if (full==true&&noMoves == true) {
+			return false;
+		}
+		else {return true;}
+
+
+		/*
 		for (int i = 0; i < this.board.length; i++) {
 			for (int j = 0; j < this.board[i].length; j++) {
 				if (this.board[i][j].getValue() != 0) {
@@ -112,6 +178,7 @@ public class Board {
 			}
 		}
 		return false;
+		*/
 	}
 
 	/**
@@ -119,7 +186,7 @@ public class Board {
 	 * 90% of the time, the new tile should be a 2; 10% of the time, it should be a 4.
 	 */
 	public void addTile() {
-
+		/*
 		if (isFull() == false) {
 			for (int i = 0; i < this.board.length; i++) {
 				for (int j = 0; j < this.board[i].length; j++) {
@@ -133,6 +200,30 @@ public class Board {
 					}
 				}
 			}
+		}
+		*/
+
+		int q = (int)(Math.random()*4);
+		int w = (int)(Math.random()*4);
+
+		int num = (int) (Math.random()*10);
+		int ran;
+		if (num >0) {
+			ran = 2;
+		}
+		else {ran = 4;}
+		if(board[q][w].getValue()!=0) {
+			if(!isFull()) {
+				addTile();
+			}
+			else{
+				if(!canMove()){
+					quit();
+				}
+			}
+		}
+		else{
+			board[q][w].setValue(ran);
 		}
 
 	}
@@ -159,6 +250,51 @@ public class Board {
 	 */
 	public boolean left() {
 		boolean changed = false;
+
+		for (int i = 0; i <board.length; i++){
+
+			//Making a shift Tile set
+			Tile[] shift = new Tile[board.length];
+			for(int o = 0; o <shift.length; o++){
+				shift[o] = new Tile();
+			}
+
+			int cap = 0;
+			for (int j = 0; j < board.length; j++){
+				if(board[i][j].getValue() != 0) {shift[cap].setValue(board[i][j].getValue()); cap++;}
+			}
+			cap = 0;
+			for(Tile val: shift){
+				board[i][cap].setValue(val.getValue());
+				cap++;
+			}
+
+			for (int j =0; j < board.length-1; j++) {//combines values;
+				if(board[i][j].getValue() == board[i][j+1].getValue() ) {
+					board[i][j].setValue(board[i][j].getValue() + board[i][j].getValue());
+					board[i][j+1].setValue(0);
+				}
+			}
+
+			//Making a shiftAgain Tile set
+			Tile[] shiftAgain = new Tile[board.length];
+			for(int p = 0; p <shiftAgain.length; p++){
+				shiftAgain[p] = new Tile();
+			}
+
+			cap = 0;
+			for (int j = 0;j<board.length;j++) {
+				if(board[i][j].getValue() !=0) {shiftAgain[cap].setValue(board[i][j].getValue()); cap++;}
+			}
+
+			cap = 0;
+			for(Tile val: shiftAgain) {
+				board[i][cap].setValue(val.getValue());
+				cap++;
+			}
+		}
+
+		/*
 		for (int i = 0; i < this.board.length; i++) {
 			for (int j = 0; j < this.board[i].length - 1; j++) {
 				if (board[i][j + 1].getValue() == board[i][j].getValue()) {
@@ -171,6 +307,7 @@ public class Board {
 				}
 			}
 		}
+		*/
 		return changed;
 	}
 
@@ -217,11 +354,36 @@ public class Board {
 		System.exit(0);
 	}
 
+	public boolean same(Board other) {
+
+		if(Arrays.deepEquals(board,other.board)) {return true;}
+		else {return false;}
+	}
+
+
 	public String toString(){
-		String view = score+"\n"+gameSize+"\n";
+		/*
+		for(int i = 0; i < board.length; i++){
+			System.out.println();
+			System.out.print("[ ");
+			for(int j = 0; j <board[i].length; j++){
+				System.out.print(board[i][j].toString() + " ");
+			}
+			System.out.print("]");
+		}
+		*/
+
+
+		String view = "Score "+ score+"\nGame Size: "+gameSize+"\n";
 		for(Tile[] i: board) {
 			view = view + Arrays.toString(i)+"\n";
 		}
 		return view;
+	}
+
+	public static void main(String[] args){
+		Board test = new Board(4);
+
+
 	}
 }

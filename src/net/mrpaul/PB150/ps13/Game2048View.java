@@ -17,17 +17,24 @@ public class Game2048View {
 		this.currentBoard = brd;
 	}
 
+	public Board getBoard(){
+		return currentBoard;
+	}
+
 	/**
 	 * Prompt the user to type in
 	 * "Next action: [W]Up, [A]Left, [S]Down, [D]Right, [Q]uit, [R]eset: "
 	 * and return the appropriate UserAction enum value
 	 * @return
 	 */
-	public UserAction getUserAction(){
-		Scanner input = new Scanner(System.in);
+	public static UserAction getUserAction(){
 		System.out.println("Next action: [W]Up, [A]Left, [S]Down, [D]Right, [Q]uit, [R]eset: ");
+
+		Scanner input = new Scanner(System.in);
 		String action = input.nextLine();
+
 		action = action.toUpperCase();
+
 		switch (action){
 			case "W": return UserAction.UP;
 			case "A": return UserAction.LEFT;

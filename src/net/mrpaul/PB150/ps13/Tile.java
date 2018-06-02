@@ -34,10 +34,9 @@ public class Tile {
 	public String toString() {
 
 		if (value  == 0 )
-			return "_";
+			return "0";
 		else
 			return value + "";
-
 	}
 
 	public Tile clone() {

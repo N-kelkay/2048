@@ -12,28 +12,35 @@ public class Game2048Controller {
 	public void runGame(){
 		boolean isRunning = true;
 		while(isRunning){
-
+			System.out.println(board.toString());
+			UserAction move = null;
 			if(board.canMove() == true) {
-				//Board state = new Board(board.);
+				move = Game2048View.getUserAction();
 
-				if (view.getUserAction() == UserAction.UP) {
+				Board state = new Board(board.getTile());
+
+				if (move == UserAction.UP) {
 					board.up();
 				}
-				if (view.getUserAction() == UserAction.DOWN) {
+				else if (move == UserAction.DOWN) {
 					board.down();
 				}
-				if (view.getUserAction() == UserAction.LEFT) {
+				else if (move == UserAction.LEFT) {
 					board.left();
 				}
-				if (view.getUserAction() == UserAction.RIGHT) {
+				else if (move == UserAction.RIGHT) {
 					board.right();
 				}
-				if (view.getUserAction() == UserAction.QUIT) {
+				else if (move == UserAction.QUIT) {
 					isRunning = false;
 					board.quit();
 				}
-				if (view.getUserAction() == UserAction.RESET) {
+				else if (move == UserAction.RESET) {
 					board.reset();
+				}
+
+				if(state.same(board)) {
+					board.addTile();
 				}
 
 				view.setBoard(board);
