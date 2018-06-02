@@ -213,6 +213,10 @@ public class Board {
 		return clone;
 	}
 
+	public void quit() {
+		System.exit(0);
+	}
+
 	public String toString(){
 		String view = score+"\n"+gameSize+"\n";
 		for(Tile[] i: board) {
