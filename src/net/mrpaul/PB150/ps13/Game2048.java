@@ -1,5 +1,10 @@
 package net.mrpaul.PB150.ps13;
 
+/**
+ * Main class. This is where the Program runs
+ *
+ * @author Natenael Kelkay
+ */
 public class Game2048 {
 	private Board board;
 	private Game2048View view;

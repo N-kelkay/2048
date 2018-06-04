@@ -48,6 +48,5 @@ public class Game2048Controller {
 			}
 			else {System.out.println("Invalid, try again");}
 		}
-
 	}
 }

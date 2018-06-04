@@ -21,9 +21,7 @@ public class Board {
 				board[i][j] = new Tile();
 			}
 		}
-
 		addTile();addTile();
-
 	}
 
 	Board(int size) {
@@ -165,20 +163,6 @@ public class Board {
 			return false;
 		}
 		else {return true;}
-
-
-		/*
-		for (int i = 0; i < this.board.length; i++) {
-			for (int j = 0; j < this.board[i].length; j++) {
-				if (this.board[i][j].getValue() != 0) {
-					return true;
-				} else if ((this.board[i][j].getValue() == this.board[i + 1][i + j].getValue()) || (this.board[i][j].getValue() == this.board[i - 1][i - j].getValue())) {
-					return true;
-				}
-			}
-		}
-		return false;
-		*/
 	}
 
 	/**
@@ -186,23 +170,6 @@ public class Board {
 	 * 90% of the time, the new tile should be a 2; 10% of the time, it should be a 4.
 	 */
 	public void addTile() {
-		/*
-		if (isFull() == false) {
-			for (int i = 0; i < this.board.length; i++) {
-				for (int j = 0; j < this.board[i].length; j++) {
-					if (this.board[i][j].getValue() == 0) {
-						int x = (int) Math.random() * 101;
-
-						if (x <= 90)
-							this.board[i][j] = new Tile(2);
-						else
-							this.board[i][j] = new Tile(4);
-					}
-				}
-			}
-		}
-		*/
-
 		int q = (int)(Math.random()*4);
 		int w = (int)(Math.random()*4);
 
@@ -225,7 +192,6 @@ public class Board {
 		else{
 			board[q][w].setValue(ran);
 		}
-
 	}
 
 	/**
@@ -293,21 +259,6 @@ public class Board {
 				cap++;
 			}
 		}
-
-		/*
-		for (int i = 0; i < this.board.length; i++) {
-			for (int j = 0; j < this.board[i].length - 1; j++) {
-				if (board[i][j + 1].getValue() == board[i][j].getValue()) {
-					board[i][j].setValue(board[i][j + 1].getValue() + board[i][j].getValue());
-					changed = true;
-				}
-				if (board[i][j].getValue() == 0) {
-					board[i][j].setValue(board[i][j + 1].getValue());
-					board[i][j].setValue(0);
-				}
-			}
-		}
-		*/
 		return changed;
 	}
 
@@ -360,30 +311,11 @@ public class Board {
 		else {return false;}
 	}
 
-
 	public String toString(){
-		/*
-		for(int i = 0; i < board.length; i++){
-			System.out.println();
-			System.out.print("[ ");
-			for(int j = 0; j <board[i].length; j++){
-				System.out.print(board[i][j].toString() + " ");
-			}
-			System.out.print("]");
-		}
-		*/
-
-
 		String view = "Score "+ score+"\nGame Size: "+gameSize+"\n";
 		for(Tile[] i: board) {
 			view = view + Arrays.toString(i)+"\n";
 		}
 		return view;
-	}
-
-	public static void main(String[] args){
-		Board test = new Board(4);
-
-
 	}
 }
